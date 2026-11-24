@@ -1,0 +1,55 @@
+﻿.required-label::after {
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+
+.form-card {
+    border: 1px solid #e5e7eb;
+    padding: 20px;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.page-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 12px;
+}
+table.table thead th {
+    border-top: 1px solid #dee2e6 !important;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.form-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* slim buttons */
+.form-buttons .btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+    .form-group label {
+        display: block;
+        margin-bottom: 4px;
+    }

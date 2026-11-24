@@ -1,0 +1,96 @@
+﻿@model StudentManagement.Models.Entities.Gender
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center px-3 py-2 rounded shadow-sm"
+             style="background: linear-gradient(90deg, #707375, #7b8080); color: white;">
+            <h4 class="mb-0">
+                @(Model?.Id > 0 ? "Update Gender" : "Create Gender")
+            </h4>
+            <a asp-controller="Gender" asp-action="Index" class="btn btn-light btn-sm">Back</a>
+        </div>
+    </div>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form id="genderForm" asp-action="Create" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="row ">
+        <div class="col-xl-12">
+            <div class="card ">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="required-label">Name</label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <span id="nameError" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input asp-for="IsActive" class="form-check-input" />
+                                <label asp-for="IsActive" class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-buttons">
+        <button type="submit" id="btnSave" class="btn btn-primary">
+            @(Model?.Id > 0 ? "Update" : "Save")
+        </button>
+
+        <a href="@Url.Action("Index")" class="btn btn-secondary">
+            Back
+        </a>
+    </div>
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $("#btnSave").on("click", function (e)
+        {
+            if (!$("#genderForm").valid())
+            {
+                return;
+            }
+
+            e.preventDefault();
+
+            $("#nameError").text("");
+
+            var model = {
+                Name: $("#Name").val(),
+                Id: $("#Id").val()
+            };
+
+            $.ajax({
+                url: '/APanel/Gender/CheckDuplicate',
+                type: 'GET',
+                data: model,
+                success: function (res)
+                {
+                    if (res.isDuplicate)
+                    {
+                        $("#nameError").text("Gender name already exists!");
+                        return;
+                    }
+
+                    $("#genderForm").submit();
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@model StudentManagement.Models.ViewModels.UserViewModel
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center px-3 py-2 rounded shadow-sm"
+             style="background: linear-gradient(90deg, #707375, #7b8080); color: white;">
+            <h4 class="mb-0">User Details</h4>
+            <a asp-controller="User" asp-action="Index" class="btn btn-light btn-sm">Back</a>
+        </div>
+    </div>
+</div>
+<div class="row ">
+    <div class="col-xl-12">
+        <div class="card ">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input asp-for="UserName" class="form-control" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input asp-for="Password" class="form-control" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Role</label>
+                            <input asp-for="RoleName" class="form-control" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status</label>
+                            <input value="@(Model.IsActive ? "Active" : "Inactive")" class="form-control" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-buttons">
+    <a asp-action="Create" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary"> Back </a>
+</div>

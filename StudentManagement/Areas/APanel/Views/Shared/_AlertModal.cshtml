@@ -1,0 +1,51 @@
+﻿@{
+    string? message = null;
+    string? type = null;
+
+    if (TempData["SuccessMessage"] != null)
+    {
+        message = TempData["SuccessMessage"]?.ToString();
+        type = "success";
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        message = TempData["ErrorMessage"]?.ToString();
+        type = "error";
+    }
+}
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="modal fade show" id="alertModal" tabindex="-1" style="display:block; background:rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+
+                <div class="modal-header
+                        @(type == "success" ? "bg-success" : "bg-danger") text-white">
+
+                    <h5 class="modal-title">
+                        @(type == "success" ? "Success" : "Error")
+                    </h5>
+                </div>
+
+                <div class="modal-body">
+                    <p class="mb-0">@message</p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="closeAlert()">
+                        OK
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeAlert() {
+            document.getElementById("alertModal").remove();
+            window.location.href = '@Url.Action("Index")';
+        }
+    </script>
+}

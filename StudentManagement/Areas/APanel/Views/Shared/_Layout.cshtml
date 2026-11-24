@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Student Management System</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/StudentManagement.styles.css" asp-append-version="true" />
+
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --sidebar-bg: #ffffff;
+            --body-bg: #fafbfe;
+            /* Exact Image Color Matching */
+            --text-normal: #64748b;
+            --text-active: #0f172a;
+            --bg-active: #f1f5f9;
+            --badge-red: #ef4444;
+            /* PREMIUM LIGHT OCEAN BLUE TOPBAR CONFIG */
+            --topbar-bg: #f0f4f9; /* Light Elegant Soft Blue Tint (100% Matching for light theme) */
+            --topbar-border: #e2e8f0; /* Muted subtle dynamic border line */
+            --topbar-text: #334155; /* Dark slate gray text for crisp contrast */
+            --topbar-height: 50px;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: -0.01em;
+            color: #1e293b;
+        }
+
+        /* ─── PIXEL PERFECT IMAGE SIDEBAR ─── */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: var(--sidebar-bg);
+            z-index: 1001;
+            padding: 1.5rem 0.8rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #f1f5f9;
+        }
+
+        .sidebar-brand {
+            padding: 0.5rem 1rem 1.5rem 1rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.5px;
+        }
+
+            .sidebar-brand i {
+                color: #3b82f6;
+            }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .nav-menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 1rem;
+            color: var(--text-normal);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+        }
+
+        .nav-menu-content {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .nav-menu-item i {
+            font-size: 1.15rem;
+            color: #94a3b8;
+            transition: all 0.15s ease-in-out;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-menu-item:hover {
+            background-color: #f8fafc;
+            color: var(--text-active);
+        }
+
+            .nav-menu-item:hover i {
+                color: #64748b;
+            }
+
+        .nav-menu-item.active {
+            background-color: var(--bg-active) !important;
+            color: var(--text-active) !important;
+            font-weight: 600;
+        }
+
+            .nav-menu-item.active i {
+                color: var(--text-active) !important;
+            }
+
+        .nav-badge-red {
+            background-color: var(--badge-red);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.15rem 0.45rem;
+            border-radius: 20px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background-color: #f1f5f9;
+            margin: 1rem 0;
+        }
+
+        /* ─── NEW LUXURY LIGHT SOFT BLUE TOPBAR ─── */
+        .topbar {
+            height: var(--topbar-height);
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: var(--sidebar-width);
+            background-color: var(--topbar-bg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid var(--topbar-border); /* Soft separation line */
+        }
+
+        .topbar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--topbar-text);
+            letter-spacing: -0.3px;
+        }
+
+        .topbar-user-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .topbar-user-role {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        /* ─── CONTENT CANVAS GRID ─── */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            padding-top: var(--topbar-height);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-body {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        /* Minimal clean footer layout */
+        .admin-footer {
+            padding: 1.25rem 2.5rem;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            background: #ffffff;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* Premium Light-Matching Avatar style */
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: #ffffff; /* Bright pop avatar bg */
+            border: 1px solid var(--topbar-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6; /* Matching clean blue font icon */
+            font-size: 0.95rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s;
+        }
+
+            .avatar:hover {
+                background: #f8fafc;
+                transform: translateY(-1px);
+            }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+
+        <a class="sidebar-brand" asp-area="APanel" asp-controller="Dashboard" asp-action="Index">
+            <i class="fa-solid fa-graduation-cap me-2"></i> SMS Portal
+        </a>
+
+        <div class="sidebar-menu">
+
+            <a class="nav-menu-item" asp-area="APanel" asp-controller="Dashboard" asp-action="Index">
+                <div class="nav-menu-content">
+                    <i class="fa-regular fa-grid-2"></i>
+                    <span>Dashboard</span>
+                </div>
+            </a>
+
+            <div class="menu-label">Management</div>
+
+            <a class="nav-menu-item" asp-area="APanel" asp-controller="User" asp-action="Index">
+                <div class="nav-menu-content">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>User</span>
+                </div>
+            </a>
+
+            <a class="nav-menu-item" asp-area="APanel" asp-controller="Role" asp-action="Index">
+                <div class="nav-menu-content">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Role</span>
+                </div>
+            </a>
+            <a class="nav-menu-item" asp-area="APanel" asp-controller="Department" asp-action="Index">
+                <div class="nav-menu-content">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Department</span>
+                </div>
+            </a>
+            <a class="nav-menu-item" asp-area="APanel" asp-controller="Gender" asp-action="Index">
+                <div class="nav-menu-content">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Gender</span>
+                </div>
+            </a>
+            <a class="nav-menu-item" asp-area="APanel" asp-controller="BloodGroup" asp-action="Index">
+                <div class="nav-menu-content">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>BloodGroup</span>
+                </div>
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+        </div>
+    </aside>
+
+    <header class="topbar">
+        <div>
+            <span class="topbar-title"><i class="fa-regular fa-compass me-1 text-secondary"></i> Control Center</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-none d-sm-block">
+                <span class="topbar-user-role me-2">Logged in as </span>
+                <span class="topbar-user-name">@User.Identity?.Name</span>
+            </div>
+            <div class="avatar">
+                <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-sm btn-outline-danger" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <main role="main" class="content-body">
+            @RenderBody()
+        </main>
+
+        <footer class="admin-footer d-flex justify-content-between align-items-center">
+            <div>
+                &copy; 2026 - StudentManagement - <a asp-area="APanel" asp-controller="Dashboard" asp-action="Index" class="text-decoration-none text-secondary fw-medium">Privacy</a>
+            </div>
+            <div style="font-weight: 500; font-size: 0.8rem;">v1.0.0</div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/custom.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Html.PartialAsync("_AlertModal")
+
+    <script>
+        $(document).ready(function () {
+            var currentUrl = window.location.pathname;
+            $('.nav-menu-item').removeClass('active');
+
+            $('.nav-menu-item').each(function () {
+                var href = $(this).attr('href');
+                if (href && href !== '#' && (currentUrl === href || currentUrl.startsWith(href + '/'))) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
